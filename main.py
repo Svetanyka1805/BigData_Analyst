@@ -49,8 +49,6 @@ trafL3.running()
 # Проверить работу метода.
 # Например: 20м * 5000м * 25кг * 5см = 12500 т
 class Road:
-    _length: int
-    _width: int
 
     def __init__(self, length, width):
         self._length = length
