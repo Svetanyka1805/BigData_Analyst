@@ -6,26 +6,26 @@ from datetime import datetime
 
 
 class Dat:
-    fDate: datetime
-    dt: str
-    fMonths: list = ['январь', 'февраль', 'март', 'апрель', 'май', 'июнь', 'июль', 'август', 'сентябрь', 'октябрь',
+    __fDate: datetime
+    __dt: str
+    __fMonths: list = ['январь', 'февраль', 'март', 'апрель', 'май', 'июнь', 'июль', 'август', 'сентябрь', 'октябрь',
                      'ноябрь', 'декабрь']
-    name_month: list = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября',
+    __name_month: list = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября',
                         'Ноябрь', 'Декабрь']
 
     def __init__(self, pDate):
         try:
-            Dat.fDate = datetime.strptime(pDate, '%d-%m-%Y')
+            Dat.__fDate = datetime.strptime(pDate, '%d-%m-%Y')
             self.get_datepart()
-            print(f"Дата = {Dat.fDate.day} {Dat.name_month[Dat.fDate.month % 12 -1]} {Dat.fDate.year}")
+            print(f"Дата = {Dat.__fDate.day} {Dat.__name_month[Dat.__fDate.month % 12 -1]} {Dat.__fDate.year}")
         except ValueError as ex:
             print(ex.args)
-            Dat.dt = pDate
-            print(f"Ошибка в дате {pDate}!\n{self.valid_date(Dat.dt)}")
+            Dat.__dt = pDate
+            print(f"Ошибка в дате {pDate}!\n{self.valid_date(Dat.__dt)}")
 
     @classmethod
     def get_datepart(cls):
-        print({"день": cls.fDate.day, "месяц": cls.fDate.month, "год": cls.fDate.year})
+        print({"день": cls.__fDate.day, "месяц": cls.__fDate.month, "год": cls.__fDate.year})
 
     @staticmethod
     def valid_date(dt: datetime):
@@ -33,13 +33,13 @@ class Dat:
         ls = [int(i) for i in dt.split("-")]
         if (not (ls[0] in range(1, 32)) and (ls[1] in [1, 3, 5, 7, 8, 10, 12])) or (
                 not (ls[0] in range(1, 31)) and (ls[1] in [4, 6, 9, 11])):
-            return f"Число дня {ls[0]} не существует в месяце {Dat.fMonths[ls[1] % 12 - 1]}"
+            return f"Число дня {ls[0]} не существует в месяце {Dat.__fMonths[ls[1] % 12 - 1]}"
 
         elif not (ls[1] in range(1, 13)):
             return f"Номер месяца = {ls[1]} не существует. В году всего 12 месяцев"
 
         elif ls[0] == 29 and ls[1] == 2 and (ls[2] % 4 != 0):
-            return f"В году {ls[2]} число {ls[0]} в месяце {Dat.fMonths[ls[1] % 12 - 1]} не существует"
+            return f"В году {ls[2]} число {ls[0]} в месяце {Dat.__fMonths[ls[1] % 12 - 1]} не существует"
 
 
 myDate = Dat(input("Введите дату в формате dd-mm-yyyy: "))
@@ -64,43 +64,6 @@ divider = int(input("Введитель делитель = "))
 er = ErrorDevinionByZero(dividend, divider)
 
 
-# 3. Создайте собственный класс-исключение, который должен проверять содержимое списка на наличие только чисел.
-# Проверить работу исключения на реальном примере. Необходимо запрашивать у пользователя данные и заполнять список.
-# Класс-исключение должен контролировать типы данных элементов списка.
-# Примечание: длина списка не фиксирована. Элементы запрашиваются бесконечно,
-# пока пользователь сам не остановит работу скрипта, введя, например, команду “stop”.
-# При этом скрипт завершается, сформированный список выводится на экран.
-# Подсказка: для данного задания примем, что пользователь может вводить только числа и строки.
-# При вводе пользователем очередного элемента необходимо реализовать проверку типа элемента и вносить его в список, только если введено число.
-# Класс-исключение должен не позволить пользователю ввести текст (не число) и отобразить соответствующее сообщение.
-# При этом работа скрипта не должна завершаться.
-
-class ErrorDigital:
-    digit: str
-    def is_digit(self, digit):
-        ErrorDigital.digit = digit
-        try:
-            return True, int(ErrorDigital.digit)
-        except ValueError as ex:
-            # print(ex.__str__())
-            return False, ex.__str__()
-
-
-list_digit = list()
-check_digit = ErrorDigital()
-inpt_digit = input("Введите число = ")
-while inpt_digit != "":
-    ret = check_digit.is_digit(inpt_digit)
-    if ret[0] == True:
-        list_digit.append(ret[1])
-    else:
-        print(F"{inpt_digit} не является числом!")
-
-    inpt_digit = input("Введите следующее число или нажмите Enter для завершения = ")
-
-print(list_digit)
-
-
 # 4. Начните работу над проектом «Склад оргтехники». Создайте класс, описывающий склад.
 # А также класс «Оргтехника», который будет базовым для классов-наследников.
 # Эти классы — конкретные типы оргтехники (принтер, сканер, ксерокс).
@@ -108,42 +71,190 @@ print(list_digit)
 # В классах-наследниках реализовать параметры, уникальные для каждого типа оргтехники.
 # 5. Продолжить работу над первым заданием.
 # Разработать методы, отвечающие за приём оргтехники на склад и передачу в определенное подразделение компании.
-# Для хранения данных о наименовании и количестве единиц оргтехники, а также других данных,
-# можно использовать любую подходящую структуру, например словарь.
+# Для хранения данных о наименовании и количестве единиц оргтехники, а также других данных, можно использовать любую подходящую структуру, например словарь.
+from datetime import datetime
+
+
+class Sklad:
+
+    def __init__(self):
+        self.orgtech = dict()
+        self.company = dict()
+
+    def add2sklad(self, what, how_much):
+        if what in self.orgtech:
+            self.orgtech[what] += how_much
+        else:
+            self.orgtech[what] = how_much
+
+    def delFromsklad(self, what, how_much, whom):
+        self.orgtech[what] -= how_much
+        self.company[whom] = [what, self.orgtech[what],  datetime.strftime(datetime.today(), '%d-%m-%Y')]
+
+    def get_list_orgtech(self):
+        return self.orgtech
+
+    def get_count_tech(self, orgtch):
+        return self.orgtech[orgtch]
+
+    def product_movement(self):
+        print(self.company)
+
+    def __str__(self):
+       return f"Техника на складе:\n{self.orgtech}"
+
+
+class OrgTech:
+
+    def __init__(self, orgtech):
+        if not (orgtech in list_tech):
+            list_tech.append(orgtech)
+
+    def __str__(self):
+        return f"{self.__class__.__name__}"
+
+    @staticmethod
+    def valid_count(count):
+        try:
+            int(count)
+            if int(count) >= 0:
+                return True
+            else:
+                return False
+        except ValueError:
+            return False
+
+    @staticmethod
+    def show_orgtech():
+        print(f"сведения об имеющейся технике: {str(list_tech)}")
+
+
+class Printer(OrgTech):
+    def __init__(self, org_count: int = 0):
+        self.orgtech = "принтер"
+        self.org_count = org_count
+
+
+class Scanner(OrgTech):
+    def __init__(self, org_count: int = 0):
+        self.orgtech = "сканер"
+        self.org_count = org_count
+
+
+class Xerox(OrgTech):
+    def __init__(self, org_count: int = 0):
+        self.orgtech = "ксерокс"
+        self.org_count = org_count
+
 # 6. Продолжить работу над вторым заданием. Реализуйте механизм валидации вводимых пользователем данных.
 # Например, для указания количества принтеров, отправленных на склад, нельзя использовать строковый тип данных.
 # Подсказка: постарайтесь по возможности реализовать в проекте «Склад оргтехники» максимум возможностей, изученных на уроках по ООП.
 
+sklad = Sklad()
 printer = Printer()
 scanner = Scanner()
 xerox = Xerox()
 list_tech = ["принтер", "сканер", "ксерокс"]
 
-tech = input("Введите название техники: ")
+tech = input("Введите название техники: ").lower().replace(" ", "")
 while tech != "":
-    if (tech in list_tech) == True:
-        count = input(f"Введите количество {tech} для заказа ")
+    if (tech in list_tech):
+
+        inpt_count = input(f"Введите количество {tech} для заказа ")
+        while not OrgTech.valid_count(inpt_count):
+            inpt_count = input(f"Количество {inpt_count} введено не корректно! Введите корректное количество {tech} для заказа ")
+        count = int(inpt_count)
 
         if list_tech.index(tech) == 0:
-            res = printer.input_tech_count(count)
+            printer.org_count += count
+            res_count = printer.org_count
         elif list_tech.index(tech) == 1:
-            res = scanner.input_tech_count(count)
+            scanner.org_count += count
+            res_count = scanner.org_count
         elif list_tech.index(tech) == 2:
-            res = xerox.input_tech_count(count)
+            xerox.org_count += count
+            res_count = xerox.org_count
 
-        if res[0] == True:
-            print(f"Заказ на {tech} в количестве {count}. Всего количество = {res[1]}")
+        print(f"Заказ на {tech} в количестве {count}. Всего количество = {res_count}")
 
     else:
         print(f"Мы такое не продаем. Вот список нашей продукции: {list_tech}")
 
-    tech = input("Введите название техники: ")
+    tech = input("Введите название техники или нажмите Enter для окончания ввода: ").lower().replace(" ", "")
 
-print(printer.org_count)
+print()
+print()
+print()
+# print("созданы объекты: ", printer, scanner, xerox)
+OrgTech.show_orgtech()
+print()
+sklad.add2sklad(printer.orgtech, printer.org_count)
+sklad.add2sklad(scanner.orgtech, scanner.org_count)
+sklad.add2sklad(xerox.orgtech, xerox.org_count)
+# print(sklad.get_list_orgtech())
 
+
+def get_input_count(inpt_count):
+    while not OrgTech.valid_count(inpt_count):
+        inpt_count = input(f"Не корректно введено Количество {inpt_count}! Введите корректное количество {tech} для отгрузки ")
+    return int(inpt_count)
+
+
+if input("Хотите распределить технику? да/нет   ").lower() == "да":
+    tech = input(f"Какую технику хотите отгрузить? на складе имеются: {sklad.get_list_orgtech()} ").lower().replace(" ", "")
+    while tech != "":
+        if tech in list_tech:
+            inpt_count = input(f"Количество {tech} для отгрузки? (количество на складе {sklad.get_count_tech(tech)}) ")
+            count = get_input_count(inpt_count)
+            if count > sklad.get_count_tech(tech):
+                inpt_count = input(f"К сожалению указанного количесвта {tech} на складе нет. Введите меньшее "
+                                  f"количество или '0' для отказа (количество на складе {sklad.get_count_tech(tech)}) ")
+                count = get_input_count(inpt_count)
+
+            if not (count == 0):
+                company = input("Кому? (имя компании или получателя): ")
+                sklad.delFromsklad(tech, count, company)
+            tech = input(
+                f"Какую технику хотите отгрузить? на складе имеются: {sklad.get_list_orgtech()} ").lower().replace(" ", "")
+        else:
+            tech = input(f"На складе нет товара {tech}. На складе имеются: {sklad.get_list_orgtech()}"
+                         f" Введите из преложенного: ").lower().replace(" ", "")
+
+print()
+print()
+
+sklad.product_movement()
+print(f"Осталось на складе: {sklad.get_list_orgtech()}")
+print()
+print("Добавим еще 3 принтера")
+sklad.add2sklad(printer.orgtech, 3)
+print(f"Осталось на складе: {sklad.get_list_orgtech()}")
 
 
 # 7. Реализовать проект «Операции с комплексными числами».
 # Создайте класс «Комплексное число», реализуйте перегрузку методов сложения и умножения комплексных чисел.
 # Проверьте работу проекта, создав экземпляры класса (комплексные числа) и выполнив сложение и умножение созданных экземпляров.
 # Проверьте корректность полученного результата.
+
+class ComplexNumber:
+    def __init__(self, chislo):
+        self.compl_digit = chislo
+
+    def __add__(self, other):
+
+        return self.compl_digit + other.compl_digit
+
+    def __mul__(self, other):
+        return self.compl_digit * other.compl_digit
+
+    def __str__(self):
+        return str(self.compl_digit)
+
+
+cdigit1 = ComplexNumber(complex(1, 6))
+cdigit2 = ComplexNumber(1 + 0.051j)
+
+print(cdigit1)
+print(cdigit2)
+print(cdigit1 + cdigit2)
+print(cdigit1 * cdigit2)
