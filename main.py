@@ -11,7 +11,6 @@ import copy
 
 
 class Matrix:
-    new_matrix = list()
 
     def __init__(self, matrix):
         self.matrix = matrix
